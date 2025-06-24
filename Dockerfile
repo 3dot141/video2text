@@ -28,9 +28,5 @@ ENV OPENAI_BASE_URL=https://api.openai.com/v1
 
 # 注意：OPENAI_API_KEY 必须在运行时提供，这里不设置默认值
 
-# 健康检查
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD curl -f http://localhost:3000/health || exit 1
-
 # 启动应用
 CMD ["pnpm", "start"] 

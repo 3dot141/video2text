@@ -2,10 +2,12 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const fs = require('fs-extra');
+const session = require('express-session');
 
 // 导入配置和路由
 const config = require('./config/config');
 const transcriptionRoutes = require('./routes/transcription');
+const authRoutes = require('./routes/auth');
 const { errorHandler } = require('./middleware/errorHandler');
 
 // 验证配置
@@ -25,6 +27,18 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Session 配置
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'your-session-secret-key',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    secure: false, // 在生产环境中设置为 true（需要 HTTPS）
+    httpOnly: true,
+    maxAge: 24 * 60 * 60 * 1000 // 24小时
+  }
+}));
+
 // 静态文件服务
 app.use(express.static('public'));
 
@@ -33,6 +47,7 @@ const uploadDir = config.upload.uploadDir;
 fs.ensureDirSync(uploadDir);
 
 // 路由
+app.use('/api/auth', authRoutes);
 app.use('/api/transcription', transcriptionRoutes);
 
 // 健康检查端点

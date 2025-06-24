@@ -4,6 +4,7 @@ const multer = require('multer');
 const path = require('path');
 const { transcribeVideo } = require('../services/whisperService');
 const { validateFile } = require('../middleware/fileValidation');
+const { verifyToken } = require('../middleware/auth');
 
 // 文件上传配置
 const storage = multer.diskStorage({
@@ -43,8 +44,8 @@ const upload = multer({
   }
 });
 
-// 转录视频/音频文件
-router.post('/transcribe', upload.single('file'), validateFile, async (req, res, next) => {
+// 转录视频/音频文件 (需要认证)
+router.post('/transcribe', verifyToken, upload.single('file'), validateFile, async (req, res, next) => {
   try {
     if (!req.file) {
       return res.status(400).json({

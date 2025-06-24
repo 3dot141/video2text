@@ -4,9 +4,6 @@ FROM node:18-alpine
 # 设置工作目录
 WORKDIR /app
 
-# 安装 FFmpeg (用于视频处理)
-RUN apk add --no-cache ffmpeg
-
 # 复制 package.json 和 pnpm-lock.yaml
 COPY package.json pnpm-lock.yaml ./
 

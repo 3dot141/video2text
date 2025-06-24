@@ -12,7 +12,9 @@ const storage = multer.diskStorage({
     cb(null, process.env.UPLOAD_DIR || './uploads');
   },
   filename: (req, file, cb) => {
-    const uniqueName = `${Date.now()}-${Math.round(Math.random() * 1E9)}${path.extname(file.originalname)}`;
+    // 正确处理中文文件名编码
+    const originalName = Buffer.from(file.originalname, 'latin1').toString('utf8');
+    const uniqueName = `${Date.now()}-${Math.round(Math.random() * 1E9)}${path.extname(originalName)}`;
     cb(null, uniqueName);
   }
 });
@@ -60,18 +62,21 @@ router.post('/transcribe', verifyToken, upload.single('file'), validateFile, asy
       language: req.body.language || 'zh', // 默认中文
       prompt: req.body.prompt || '',
       temperature: parseFloat(req.body.temperature) || 0,
-      response_format: req.body.response_format || 'json'
+      response_format: req.body.response_format || 'verbose_json'
     };
 
     const result = await transcribeVideo(req.file.path, options);
+    
+    // 正确处理中文文件名编码
+    const originalName = Buffer.from(req.file.originalname, 'latin1').toString('utf8');
     
     res.json({
       success: true,
       message: '转录完成',
       data: {
-        filename: req.file.originalname,
+        filename: originalName,
         transcription: result.text,
-        language: result.language,
+        language: result.language || options.language || 'unknown',
         duration: result.duration,
         segments: result.segments || []
       }

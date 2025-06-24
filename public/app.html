@@ -467,15 +467,27 @@
 
         function showResult(data) {
             const resultContent = document.getElementById('resultContent');
+            
+            // 确保数据安全显示，防止XSS攻击并正确处理编码
+            const filename = escapeHtml(data.filename || '未知文件');
+            const language = escapeHtml(data.language || '未知');
+            const transcription = escapeHtml(data.transcription || '转录内容为空');
+            
             resultContent.innerHTML = `
                 <div style="margin-bottom: 15px;">
-                    <strong>文件名：</strong>${data.filename}<br>
-                    <strong>语言：</strong>${data.language}<br>
+                    <strong>文件名：</strong>${filename}<br>
+                    <strong>语言：</strong>${language}<br>
                     ${data.duration ? `<strong>时长：</strong>${data.duration.toFixed(1)} 秒<br>` : ''}
                 </div>
-                <div style="background: #f5f5f5; padding: 15px; border-radius: 5px; line-height: 1.8; white-space: pre-wrap;">${data.transcription}</div>
+                <div style="background: #f5f5f5; padding: 15px; border-radius: 5px; line-height: 1.8; white-space: pre-wrap;">${transcription}</div>
             `;
             document.getElementById('result').classList.add('show');
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
         }
 
         function showError(message) {

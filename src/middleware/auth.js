@@ -1,14 +1,18 @@
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
+
+const adminUser = {
+  username: process.env.ADMIN_USERNAME,
+  password: process.env.ADMIN_PASSWORD,
+  email: process.env.ADMIN_EMAIL
+}
 
 // 临时用户存储 (实际项目中应该使用数据库)
 const users = [
   {
     id: 1,
-    // 使用环境变量传递
-    username: process.env.ADMIN_USERNAME,
-    password: process.env.ADMIN_PASSWORD,
-    email: process.env.ADMIN_EMAIL
+    username: adminUser.username,
+    password: adminUser.password,
+    email: adminUser.email
   }
 ];
 

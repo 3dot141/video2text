@@ -25,6 +25,9 @@ ENV PORT=3000
 ENV UPLOAD_DIR=/app/uploads
 ENV MAX_FILE_SIZE=104857600
 ENV OPENAI_BASE_URL=https://api.openai.com/v1
+ENV ADMIN_USERNAME=
+ENV ADMIN_PASSWORD=
+ENV ADMIN_EMAIL=ninfovores356@gmail.com
 
 # 注意：OPENAI_API_KEY 必须在运行时提供，这里不设置默认值
 

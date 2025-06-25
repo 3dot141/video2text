@@ -47,8 +47,6 @@
 
 ## 快速开始
 
-### 使用 Docker 部署（推荐）
-
 #### 1. 克隆项目
 ```bash
 git clone <repository-url>
@@ -77,22 +75,6 @@ JWT_EXPIRES_IN=24h
 MAX_FILE_SIZE=104857600
 UPLOAD_DIR=./uploads
 ```
-
-#### 3. 启动服务
-```bash
-# 使用 Docker Compose 启动
-docker-compose up -d
-
-# 查看日志
-docker-compose logs -f
-
-# 停止服务
-docker-compose down
-```
-
-#### 4. 访问服务
-- 应用地址：http://localhost:3000
-- 登录页面：http://localhost:3000/login.html
 
 ### 本地开发部署
 
